@@ -1,0 +1,159 @@
+$ make clean
+STDOUT:
+rm -f fv3d_adv_omp_naive fv3d_adv_omp_naive_nofs fv3d_adv_omp_busywait_nobarrier fv3d_adv_omp_busywait_nobarrier_nofs fv3d_adv_omp_sem_nobarrier fv3d_adv_omp_sem_nobarrier_nofs fv3d_adv_mpi_naive_3d fv3d_adv_omp_mpilike fv3d_adv_omp_naive_firsttouch_same_decomp fv3d_adv_omp_busywait_firsttouch_same_decomp sync3d_barrier_only sync3d_busywait_6neighbors_only sync3d_sem_6neighbors_only *.o
+
+STDERR:
+
+returncode=0
+
+$ make diag
+STDOUT:
+g++ -O3 -std=c++17 -march=native -Wall -Wextra -fopenmp fv3d_adv_omp_mpilike.cpp -o fv3d_adv_omp_mpilike -pthread
+g++ -O3 -std=c++17 -march=native -Wall -Wextra -fopenmp fv3d_adv_omp_naive_firsttouch_same_decomp.cpp -o fv3d_adv_omp_naive_firsttouch_same_decomp -pthread
+g++ -O3 -std=c++17 -march=native -Wall -Wextra -fopenmp fv3d_adv_omp_busywait_firsttouch_same_decomp.cpp -o fv3d_adv_omp_busywait_firsttouch_same_decomp -pthread
+g++ -O3 -std=c++17 -march=native -Wall -Wextra -fopenmp sync3d_barrier_only.cpp -o sync3d_barrier_only -pthread
+g++ -O3 -std=c++17 -march=native -Wall -Wextra -fopenmp sync3d_busywait_6neighbors_only.cpp -o sync3d_busywait_6neighbors_only -pthread
+g++ -O3 -std=c++17 -march=native -Wall -Wextra -fopenmp sync3d_sem_6neighbors_only.cpp -o sync3d_sem_6neighbors_only -pthread
+
+STDERR:
+
+returncode=0
+
+$ OMP_NUM_THREADS=4 ./fv3d_adv_omp_mpilike
+STDOUT:
+Variant : omp_mpilike_3d
+N : 32
+T : 5
+TILE : 8
+Workers : 4
+Decomp : 2 x 2 x 1
+a : 1
+b : 0.5
+c : 0.25
+CFL : 0.9
+dt : 0.01607142857142857
+final_time : 0.08035714285714286
+L1_error : 0.0009616626428224624
+L2_error : 0.007151499209294616
+Linf_error : 0.2132462159375595
+Tempo : 0.0004673880000041208 s
+
+STDERR:
+
+returncode=0
+
+$ OMP_NUM_THREADS=4 ./fv3d_adv_omp_naive_firsttouch_same_decomp
+STDOUT:
+Variant : omp_naive_firsttouch_same_decomp
+N : 32
+T : 5
+TILE : 8
+Workers : 4
+Decomp : 2 x 2 x 1
+a : 1
+b : 0.5
+c : 0.25
+CFL : 0.9
+dt : 0.01607142857142857
+final_time : 0.08035714285714286
+L1_error : 0.0009616626428224594
+L2_error : 0.007151499209294614
+Linf_error : 0.2132462159375595
+Tempo : 0.0003797110000220982 s
+
+STDERR:
+
+returncode=0
+
+$ OMP_NUM_THREADS=4 ./fv3d_adv_omp_busywait_firsttouch_same_decomp
+STDOUT:
+Variant : omp_busywait_firsttouch_same_decomp
+N : 32
+T : 5
+TILE : 8
+Workers : 4
+Decomp : 2 x 2 x 1
+a : 1
+b : 0.5
+c : 0.25
+CFL : 0.9
+dt : 0.01607142857142857
+final_time : 0.08035714285714286
+L1_error : 0.0009616626428224593
+L2_error : 0.007151499209294613
+Linf_error : 0.2132462159375595
+Tempo : 0.0003834800000106497 s
+
+STDERR:
+
+returncode=0
+
+$ OMP_NUM_THREADS=4 ./sync3d_barrier_only
+STDOUT:
+Variant : sync3d_barrier_only
+N : 32
+T : 5
+TILE : 8
+Workers : 4
+Decomp : 2 x 2 x 1
+a : 1
+b : 0.5
+c : 0.25
+CFL : 0.9
+dt : 0.01607142857142857
+final_time : 0.08035714285714286
+L1_error : 0
+L2_error : 0
+Linf_error : 0
+Tempo : 0.002162876999989294 s
+
+STDERR:
+
+returncode=0
+
+$ OMP_NUM_THREADS=4 ./sync3d_busywait_6neighbors_only
+STDOUT:
+Variant : sync3d_busywait_6neighbors_only
+N : 32
+T : 5
+TILE : 8
+Workers : 4
+Decomp : 2 x 2 x 1
+a : 1
+b : 0.5
+c : 0.25
+CFL : 0.9
+dt : 0.01607142857142857
+final_time : 0.08035714285714286
+L1_error : 0
+L2_error : 0
+Linf_error : 0
+Tempo : 0.003271194000006972 s
+
+STDERR:
+
+returncode=0
+
+$ OMP_NUM_THREADS=4 ./sync3d_sem_6neighbors_only
+STDOUT:
+Variant : sync3d_sem_6neighbors_only
+N : 32
+T : 5
+TILE : 8
+Workers : 4
+Decomp : 2 x 2 x 1
+a : 1
+b : 0.5
+c : 0.25
+CFL : 0.9
+dt : 0.01607142857142857
+final_time : 0.08035714285714286
+L1_error : 0
+L2_error : 0
+Linf_error : 0
+Tempo : 0.002526832999990347 s
+
+STDERR:
+
+returncode=0
+
